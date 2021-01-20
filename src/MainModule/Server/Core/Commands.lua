@@ -1355,7 +1355,7 @@ return function(Vargs)
 			Args = {"player","message"};
 			Description = "Sends the player a notification";
 			Filter = true;
-			"Moderators"; -- Moderators can use
+			AdminLevel = "Moderators"; -- Moderators can use
 			Function = function(plr,args)
 				assert(args[1] and args[2],"Argument missing or nil")
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
@@ -1486,7 +1486,7 @@ return function(Vargs)
 			Args = {"message";};
 			Filter = true;
 			Description = "Makes a message";
-			"Moderators"; -- Moderators can use
+			AdminLevel = "Moderators"; -- Moderators can use
 			Function = function(plr,args)
 				assert(args[1],"Argument missing or nil")
 				for i,v in next,service.Players:GetPlayers() do
@@ -1650,7 +1650,7 @@ return function(Vargs)
 			Args = {"player","message";};
 			Filter = true;
 			Description = "Warns players";
-			"Moderators"; -- Moderators can use
+			AdminLevel = "Moderators"; -- Moderators can use
 			Function = function(plr,args,data)
 				assert(args[1] and args[2],"Argument missing or nil")
 				local plrLevel = data.PlayerData.Level
@@ -1681,7 +1681,7 @@ return function(Vargs)
 			Args = {"player","message";};
 			Filter = true;
 			Description = "Warns & kicks a player";
-			"Moderators"; -- Moderators can use
+			AdminLevel = "Moderators"; -- Moderators can use
 			Function = function(plr,args,data)
 				assert(args[1] and args[2],"Argument missing or nil")
 				local plrLevel = data.PlayerData.Level
@@ -1712,7 +1712,7 @@ return function(Vargs)
 			Commands = {"warnings","showwarnings"};
 			Args = {"player"};
 			Description = "Shows warnings a player has";
-			"Moderators"; -- Moderators can use
+			AdminLevel = "Moderators"; -- Moderators can use
 			Function = function(plr, args)
 				assert(args[1], "Argument missing or nil")
 				for i,v in next,service.GetPlayers(plr,args[1]) do
@@ -1738,7 +1738,7 @@ return function(Vargs)
 			Commands = {"clearwarnings"};
 			Args = {"player"};
 			Description = "Clears any warnings on a player";
-			"Moderators"; -- Moderators can use
+			AdminLevel = "Moderators"; -- Moderators can use
 			Function = function(plr, args)
 				assert(args[1], "Argument missing or nil")
 				for i,v in next,service.GetPlayers(plr,args[1]) do
@@ -2296,7 +2296,7 @@ return function(Vargs)
 			Args = {"player";"message";};
 			Filter = true;
 			Description = "Makes a message in the target player(s)'s chat window";
-			"Moderators"; -- Moderators can use
+			AdminLevel = "Moderators"; -- Moderators can use
 			Function = function(plr,args)
 				for i,v in next,service.GetPlayers(plr,args[1]) do
 					Remote.Send(v,"Function","ChatMessage",service.Filter(args[2],plr,v),Color3.new(1,64/255,77/255))
@@ -2810,7 +2810,7 @@ return function(Vargs)
 			Args = {"player";"message";};
 			Filter = true;
 			Description = "Send a private message to a player";
-			"Moderators"; -- Moderators can use
+			AdminLevel = "Moderators"; -- Moderators can use
 			Function = function(plr,args)
 				assert(args[1] and args[2],"Argument missing")
 				if Admin.CheckAdmin(plr) then
@@ -3760,7 +3760,7 @@ return function(Vargs)
 			Args = {"player";};
 			Description = "Makes you view the target player";
 			Agents = true;
-			"Moderators"; -- Moderators can use
+			AdminLevel = "Moderators"; -- Moderators can use
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr, args[1])) do
 					if v and v.Character:FindFirstChild('Humanoid') then
@@ -3930,7 +3930,7 @@ return function(Vargs)
 			Hidden = false;
 			Description = "Shows you the list of admins, also shows admins that are currently in the server";
 			Fun = false;
-			"Moderators"; -- Moderators can use
+			AdminLevel = "Moderators"; -- Moderators can use
 			Function = function(plr,args)
 				local temptable = {}
 
@@ -4019,7 +4019,7 @@ return function(Vargs)
 			Hidden = false;
 			Description = "Shows you the normal ban list";
 			Fun = false;
-			"Moderators"; -- Moderators can use
+			AdminLevel = "Moderators"; -- Moderators can use
 			Function = function(plr,args)
 				local tab = {}
 				for i,v in pairs(Settings.Banned) do
@@ -4035,7 +4035,7 @@ return function(Vargs)
 			Args = {"player";"anwser1,answer2,etc (NO SPACES)";"question";};
 			Filter = true;
 			Description = "Lets you ask players a question with a list of answers and get the results";
-			"Moderators"; -- Moderators can use
+			AdminLevel = "Moderators"; -- Moderators can use
 			Function = function(plr,args)
 				local question = args[3]
 				if not question then error("You forgot to supply a question!") end
@@ -4598,7 +4598,7 @@ return function(Vargs)
 			Hidden = false;
 			Description = "Shows you information about the target player";
 			Fun = false;
-			"Moderators"; -- Moderators can use
+			AdminLevel = "Moderators"; -- Moderators can use
 			Function = function(plr,args)
 				local plz = service.GetPlayers(plr, (args[1] and args[1]:lower()) or plr.Name:lower())
 				for i,v in pairs(plz) do
@@ -5073,7 +5073,7 @@ return function(Vargs)
 			Description = "Shows you where the target player(s) is/are";
 			Fun = false;
 			Agents = true;
-			"Moderators"; -- Moderators can use
+			AdminLevel = "Moderators"; -- Moderators can use
 			Function = function(plr,args)
 				for i,v in next,service.GetPlayers(plr,args[1]) do
 					local bb = service.New('BillboardGui')
@@ -5121,7 +5121,7 @@ return function(Vargs)
 			Description = "Stops tracking the target player(s)";
 			Fun = false;
 			Agents = true;
-			"Moderators"; -- Moderators can use
+			AdminLevel = "Moderators"; -- Moderators can use
 			Function = function(plr,args)
 				if args[1]:lower() == Settings.SpecialPrefix.."all" then
 					Remote.RemoveLocal(plr,'Tracker',false,true)
@@ -5641,7 +5641,7 @@ return function(Vargs)
 			Hidden = false;
 			Description = "Respawns the target player(s)"; -- typo fixed
 			Fun = false;
-			"Moderators"; -- Moderators can use
+			AdminLevel = "Moderators"; -- Moderators can use
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					v:LoadCharacter()
@@ -5739,7 +5739,7 @@ return function(Vargs)
 			Hidden = false;
 			Description = "Forces the target player(s) to jump";
 			Fun = false;
-			"Moderators"; -- Moderators can use
+			AdminLevel = "Moderators"; -- Moderators can use
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					if v.Character and v.Character:findFirstChild("Humanoid") then
@@ -11084,7 +11084,7 @@ return function(Vargs)
 			Commands = {"serverlog";"serverlogs";"serveroutput";};
 			Args = {"autoupdate"};
 			Description = "View server log";
-			"Moderators"; -- Moderators can use
+			AdminLevel = "Moderators"; -- Moderators can use
 			NoFilter = true;
 			Agents = true;
 			Function = function(plr,args)
