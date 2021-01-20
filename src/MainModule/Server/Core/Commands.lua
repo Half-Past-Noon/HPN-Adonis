@@ -882,7 +882,7 @@ return function(Vargs)
 			Commands = {"ban";};
 			Args = {"player";};
 			Description = "Bans the player from the server";
-			AdminLevel = "Admins";
+			AdminLevel = "Moderators";
 			Function = function(plr,args,data)
 				local level = data.PlayerData.Level
 				for i,v in next,service.GetPlayers(plr,args[1],false,false,true) do
@@ -910,10 +910,10 @@ return function(Vargs)
 
 		GameBan = {
 			Prefix = Settings.Prefix;
-			Commands = {"gameban", "saveban", "databan"};
+			Commands = {"gameban", "saveban", "databan", "pban"};
 			Args = {"player";};
 			Description = "Bans the player from the game (Saves)";
-			AdminLevel = "Owners";
+			AdminLevel = "Admins";
 			Function = function(plr,args,data)
 				local level = data.PlayerData.Level
 				for i,v in next,service.GetPlayers(plr,args[1],false,false,true) do
