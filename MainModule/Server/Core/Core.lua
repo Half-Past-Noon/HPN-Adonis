@@ -125,8 +125,8 @@ return function(Vargs)
 
 		--// Used to change/"reset" specific datastore keys
 		DS_RESET_SALTS = {
-			SavedSettings = "32K5j4";
-			SavedTables = 	"32K5j4";
+			--SavedSettings = "32K5j4"; -- these two were added after the August 1 name spoofing incident
+			--SavedTables = "32K5j4";   -- commented out to make them have no impact because HPN doesn't need a data "wipe"
 		};
 
 		Panic = function(reason)
