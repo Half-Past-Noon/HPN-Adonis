@@ -14,7 +14,7 @@ return function(Vargs, env)
 			Commands = {"audioplayer", "mediaplayer", "musicplayer", "soundplayer", "player", "ap"};
 			Args = {"time";};
 			Description = "Opens an audio player window";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for _,v in ipairs(service.GetPlayers(plr, args[1], {
 					DontError = false;
@@ -63,7 +63,7 @@ return function(Vargs, env)
 			Args = {"target (optional)", "brickcolor (optional)"};
 			Filter = true;
 			Description = "Allows you to see <target> (or all humanoids if no target is supplied) through walls";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args, data)
 				Remote.Send(plr, "Function", "CharacterESP", false)
 
@@ -87,7 +87,7 @@ return function(Vargs, env)
 			Args = {};
 			Filter = true;
 			Description = "Removes ESP";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args, data)
 				Remote.Send(plr, "Function", "CharacterESP", false)
 			end
@@ -100,7 +100,7 @@ return function(Vargs, env)
 			Args = {};
 			Description = "Lets you pass through an object or a wall";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				if plr.Character:FindFirstChild("HumanoidRootPart") then
 					if plr.Character.Humanoid.SeatPart~=nil then
@@ -121,7 +121,7 @@ return function(Vargs, env)
 			Commands = {"timebanlist";"timebanned";"timebans";};
 			Args = {};
 			Description = "Shows you the list of time banned users";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local tab = {}
 				local variables = Core.Variables
@@ -166,7 +166,7 @@ return function(Vargs, env)
 			Commands = {"slowmode"};
 			Args = {"seconds or \"disable\""};
 			Description = "Chat Slow Mode";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				local num = args[1] and tonumber(args[1]) --math.min(tonumber(args[1]),120)
 
@@ -208,7 +208,7 @@ return function(Vargs, env)
 			Commands = {"countdownpm", "timerpm", "cdpm"};
 			Args = {"player";"time";};
 			Description = "Countdown on a target player(s) screen.";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				assert(args[1] and args[2], "Argument missing or nil")
 				local num = assert(tonumber(args[2]), "Argument 1 missing or not number")
@@ -226,7 +226,7 @@ return function(Vargs, env)
 			Commands = {"hcountdown";"hc";};
 			Args = {"time";};
 			Description = "Hint Countdown";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				local num = math.min(assert(tonumber(args[1]), "Argument 1 missing or not number"), 120)
 				local loop
@@ -246,7 +246,7 @@ return function(Vargs, env)
 			Commands = {"stopcountdown", "stopcd"};
 			Args = {};
 			Description = "Stops all currently running countdowns";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				for _, v in ipairs(service.GetPlayers(plr, args[1])) do
 					Remote.RemoveGui(v, "Countdown")
@@ -261,7 +261,7 @@ return function(Vargs, env)
 			Args = {"time";"message";};
 			Filter = true;
 			Description = "Make a message and makes it stay for the amount of time (in seconds) you supply";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				assert(args[1] and args[2] and tonumber(args[1]), "Argument missing or invalid")
 				local messageRecipient = string.format("Message from %s (@%s)", plr.DisplayName, plr.Name)
@@ -491,7 +491,7 @@ return function(Vargs, env)
 			Commands = {"ff";"forcefield";};
 			Args = {"player";};
 			Description = "Gives a force field to the target player(s)";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				for _, v in ipairs(service.GetPlayers(plr, args[1])) do
 					if v.Character then service.New("ForceField", v.Character) end
@@ -504,7 +504,7 @@ return function(Vargs, env)
 			Commands = {"unff";"unforcefield";};
 			Args = {"player";};
 			Description = "Removes force fields on the target player(s)";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				for _, v in ipairs(service.GetPlayers(plr, args[1])) do
 					Routine(function()
@@ -521,7 +521,7 @@ return function(Vargs, env)
 			Commands = {"punish";};
 			Args = {"player";};
 			Description = "Removes the target player(s)'s character";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				for _, v in ipairs(service.GetPlayers(plr, args[1])) do
 					if v.Character then
@@ -536,7 +536,7 @@ return function(Vargs, env)
 			Commands = {"unpunish";};
 			Args = {"player";};
 			Description = "UnPunishes the target player(s)";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				for _, v in ipairs(service.GetPlayers(plr, args[1])) do
 					v.Character.Parent = workspace
@@ -550,7 +550,7 @@ return function(Vargs, env)
 			Commands = {"freeze"};
 			Args = {"player";};
 			Description = "Freezes the target player(s)";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				for _, v in ipairs(service.GetPlayers(plr, args[1])) do
 					Routine(function()
@@ -569,7 +569,7 @@ return function(Vargs, env)
 			Commands = {"thaw";"unfreeze";"unice"};
 			Args = {"player";};
 			Description = "UnFreezes the target players, thaws them out";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				for _, v in ipairs(service.GetPlayers(plr, args[1])) do
 					Routine(function()
@@ -615,7 +615,7 @@ return function(Vargs, env)
 			Commands = {"afk";};
 			Args = {"player";};
 			Description = "FFs, Gods, Names, Freezes, and removes the target player's tools until they jump.";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				for _, v in ipairs(service.GetPlayers(plr, args[1])) do
 					Routine(function()
@@ -658,7 +658,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Heals the target player(s) (Regens their health)";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				for _, v in ipairs(service.GetPlayers(plr, args[1])) do
 					if v and v.Character and v.Character:FindFirstChild("Humanoid") then
@@ -675,7 +675,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Makes the target player(s) immortal, makes their health so high that normal non-explosive weapons can't kill them";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				for _, v in ipairs(service.GetPlayers(plr, args[1])) do
 					if v.Character and v.Character:FindFirstChild("Humanoid") then
@@ -693,7 +693,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Makes the target player(s) mortal again";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				for _, v in ipairs(service.GetPlayers(plr, args[1])) do
 					if v and v.Character and v.Character:FindFirstChild("Humanoid") then
@@ -711,7 +711,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Removes any hats the target is currently wearing";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				for _, p in ipairs(service.GetPlayers(plr, args[1])) do
 					for _, v in ipairs(p.Character:GetChildren()) do
@@ -730,7 +730,7 @@ return function(Vargs, env)
 			Filter = true;
 			Hidden = false;
 			Description = "Send a private message to a player";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				assert(args[1], "Argument missing")
 
@@ -922,7 +922,7 @@ return function(Vargs, env)
 			Commands = {"chat","customchat"};
 			Args = {"player"};
 			Description = "Opens the custom chat GUI";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for _, v in ipairs(service.GetPlayers(plr, args[1])) do
 					Remote.MakeGui(v, "Chat");
@@ -935,7 +935,7 @@ return function(Vargs, env)
 			Commands = {"unchat","uncustomchat"};
 			Args = {"player"};
 			Description = "Opens the custom chat GUI";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for _, v in ipairs(service.GetPlayers(plr, args[1])) do
 					Remote.RemoveGui(v, "Chat")
@@ -950,7 +950,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "UnColorCorrection the target player's screen";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				for _, v in ipairs(service.GetPlayers(plr, args[1])) do
 					Remote.RemoveLocal(p, "WINDOW_COLORCORRECTION", "Camera")
@@ -965,7 +965,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "UnSunrays the target player's screen";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				for _, v in ipairs(service.GetPlayers(plr, args[1])) do
 					Remote.RemoveLocal(v, "WINDOW_SUNRAYS", "Camera")
@@ -980,7 +980,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "UnBloom the target player's screen";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				for _, v in ipairs(service.GetPlayers(plr, args[1])) do
 					Remote.RemoveLocal(v, "WINDOW_BLOOM", "Camera")
@@ -995,7 +995,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "UnBlur the target player's screen";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				for _, v in ipairs(service.GetPlayers(plr, args[1])) do
 					Remote.RemoveLocal(v, "WINDOW_BLUR", "Camera")
@@ -1010,7 +1010,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Remove admin made lighting effects from the target player's screen";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				for _, v in ipairs(service.GetPlayers(plr, args[1])) do
 					Remote.RemoveLocal(v, "WINDOW_BLUR", "Camera")
@@ -1029,7 +1029,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Shows Trello bans";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				Remote.MakeGui(plr ,"List", {
 					Title = "Synced Ban List";
@@ -1045,7 +1045,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Hands an item to a player";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local target = service.GetPlayers(plr, args[1])[1]
 
@@ -1086,7 +1086,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Shows you a list of items currently in the target player(s) backpack";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					Routine(function()
@@ -1114,7 +1114,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Shows you all players currently in-game, including nil ones";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local plrs = {}
 				local playz = Functions.GrabNilPlayers('all')
@@ -1169,7 +1169,7 @@ return function(Vargs, env)
 			Args = {"name";};
 			Filter = true;
 			Description = "Makes a new waypoint/sets an exiting one to your current position with the name <name> that you can teleport to using :tp me waypoint-<name>";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local name=args[1] or tostring(#Variables.Waypoints+1)
 				if plr.Character:FindFirstChild('HumanoidRootPart') then
@@ -1186,7 +1186,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Deletes the waypoint named <name> if it exist";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(Variables.Waypoints) do
 					if i:lower():sub(1,#args[1])==args[1]:lower() or args[1]:lower()=='all' then
@@ -1204,7 +1204,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Shows available waypoints, mouse over their names to view their coordinates";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local temp={}
 				for i,v in pairs(Variables.Waypoints) do
@@ -1222,7 +1222,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Shows a list of admin cameras";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local tab = {}
 				for i,v in pairs(Variables.Cameras) do
@@ -1238,7 +1238,7 @@ return function(Vargs, env)
 			Args = {"name";};
 			Filter = true;
 			Description = "Makes a camera named whatever you pick";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				if plr and plr.Character and plr.Character:FindFirstChild('Head') then
 					if workspace:FindFirstChild('Camera: '..args[1]) then
@@ -1271,7 +1271,7 @@ return function(Vargs, env)
 			Commands = {"viewcam","viewc","camview","watchcam","cam"};
 			Args = {"camera";};
 			Description = "Makes you view the target player";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(Variables.Cameras) do
 					if v.Name:sub(1,#args[1]) == args[1] then
@@ -1286,7 +1286,7 @@ return function(Vargs, env)
 			Commands = {"fview";"forceview";"forceviewplayer";"fv";};
 			Args = {"player1";"player2";};
 			Description = "Forces one player to view another";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for k,p in pairs(service.GetPlayers(plr, args[1])) do
 					for i,v in pairs(service.GetPlayers(plr, args[2])) do
@@ -1318,7 +1318,7 @@ return function(Vargs, env)
 			Commands = {"viewport", "cctv"};
 			Args = {"player";};
 			Description = "Makes a viewport of the target player<s>";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr, args[1])) do
 					if v and v.Character:FindFirstChild('Humanoid') then
@@ -1333,7 +1333,7 @@ return function(Vargs, env)
 			Commands = {"resetview";"rv";"fixview";"fixcam";"unwatch";"unview"};
 			Args = {"optional player"};
 			Description = "Resets your view";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				if args[1] then
 					for i,v in pairs(service.GetPlayers(plr,args[1])) do
@@ -1350,7 +1350,7 @@ return function(Vargs, env)
 			Commands = {"guiview";"showguis";"viewguis"};
 			Args = {"player"};
 			Description = "Shows you the player's character and any guis in their PlayerGui folder [May take a minute]";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local p
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
@@ -1374,7 +1374,7 @@ return function(Vargs, env)
 			Commands = {"unguiview","unshowguis","unviewguis"};
 			Args = {};
 			Description = "Removes the viewed player's GUIs";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				Remote.Send(plr,"Function","UnLoadGuiData")
 			end;
@@ -1387,7 +1387,7 @@ return function(Vargs, env)
 			Description = "Opens the server information window";
 			Hidden = false;
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local adminDictionary = {}
 				for i,v in pairs(service.GetPlayers()) do
@@ -1451,7 +1451,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Cleans some useless junk out of workspace";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				Functions.CleanWorkspace()
 			end
@@ -1492,7 +1492,7 @@ return function(Vargs, env)
 			Commands = {"abort";"stoploop";"unloop";"unrepeat";};
 			Args = {"username";"command";};
 			Description = "Aborts a looped command. Must supply name of player who started the loop or \"me\" if it was you, or \"all\" for all loops. :abort sceleratis :kill bob or :abort all";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local name = args[1]:lower()
 				if name=="me" then
@@ -1512,7 +1512,7 @@ return function(Vargs, env)
 			Commands = {"abortall";"stoploops";};
 			Args = {"username (optional)";};
 			Description = "Aborts all existing command loops";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local name = args[1] and args[1]:lower()
 
@@ -1545,7 +1545,7 @@ return function(Vargs, env)
 			Commands = {"cmdbox", "commandbox"};
 			Args = {};
 			Description = "Command Box";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				Remote.MakeGui(plr, "Window", {
 					Title = "Command Box";
@@ -1595,7 +1595,7 @@ return function(Vargs, env)
 			Commands = {"tasks"};
 			Args = {"player"};
 			Description = "Displays running tasks";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				if args[1] then
 					for i,v in next,Functions.GetPlayers(plr, args[1]) do
@@ -1670,7 +1670,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Send player(s) to a server using the server's JobId";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local jobId = args[2];
 				assert(args[1] and jobId, "Argument missing or nil")
@@ -1687,7 +1687,7 @@ return function(Vargs, env)
 
 		AdminList = {
 			Prefix = Settings.Prefix;
-			Commands = {"admins";"adminlist";"headadmins";"owners";"moderators";"ranks"};
+			Commands = {"admins";"adminlist";"headadmins";"owners";"Admins"; -- "Moderators";"ranks"};
 			Args = {};
 			Hidden = false;
 			Description = "Shows you the list of admins, also shows admins that are currently in the server";
@@ -1943,7 +1943,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Shows you a list of tools that can be obtains via the give command";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local prefix = Settings.Prefix
 				local split = Settings.SplitKey
@@ -2000,7 +2000,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Gives you a playable keyboard piano. Credit to NickPatella.";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in next,service.GetPlayers(plr, args[1]) do
 					local piano = Deps.Assets.Piano:clone()
@@ -2017,7 +2017,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Shows you the script's available insert list";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local listforclient={}
 				for i, v in pairs(Variables.InsertList) do
@@ -2037,7 +2037,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Removes inserted objects";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(Variables.InsertedObjects) do
 					v:Destroy()
@@ -2053,7 +2053,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Remove admin objects";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				service.StopLoop("ChickenSpam")
 				for i,v in pairs(Variables.Objects) do
@@ -2099,7 +2099,7 @@ return function(Vargs, env)
 			Commands = {"serverinstances";};
 			Args = {};
 			Description = "Shows all instances created server-side by Adonis";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local objects = service.GetAdonisObjects()
 				local temp = {}
@@ -2125,7 +2125,7 @@ return function(Vargs, env)
 			Commands = {"clientinstances";};
 			Args = {"player"};
 			Description = "Shows all instances created client-side by Adonis";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in next,Functions.GetPlayers(plr, args[1]) do
 					local instList = Remote.Get(v, "InstanceList")
@@ -2149,7 +2149,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Remove script GUIs such as :m and :hint";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1] or "all")) do
 					if tostring(args[2]):lower() == "yes" or tostring(args[2]):lower() == "true" then
@@ -2176,7 +2176,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Removes all screen UI effects such as Spooky, Clown, ScreenImage, ScreenVideo, etc.";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1] or "all")) do
 					Remote.RemoveGui(v,"Effect")
@@ -2191,7 +2191,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Reset lighting back to the setting it had on server start";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				service.StopLoop("LightingTask")
 				for i,v in pairs(Variables.OriginalLightingSettings) do
@@ -2217,7 +2217,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Sets the player's lighting to match the server's";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					for prop,val in pairs(Variables.LightingSettings) do
@@ -2234,7 +2234,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Sets target player(s)'s leader stats to 0";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i, v in pairs(service.GetPlayers(plr, args[1]:lower())) do
 					cPcall(function()
@@ -2255,7 +2255,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Prompts the player(s) to buy the product belonging to the ID you supply";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i, v in pairs(service.GetPlayers(plr, args[1])) do
 					service.MarketPlace:PromptPurchase(v,tonumber(args[2]),false)
@@ -2270,7 +2270,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Shows you the list of capes for the cape command";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local list={}
 				for i,v in pairs(Variables.Capes) do
@@ -2287,7 +2287,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Gives the target player(s) the cape specified, do Settings.Prefixcapes to view a list of available capes ";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local color="White"
 				if pcall(function() return BrickColor.new(args[2]) end) then color = args[2] end
@@ -2317,7 +2317,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Removes the target player(s)'s cape";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr, args[1])) do
 					Functions.UnCape(v)
@@ -2332,7 +2332,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "NoClips the target player(s); allowing them to walk through walls";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local clipper = Deps.Assets.Clipper:Clone()
 				clipper.Name = "ADONIS_NoClip"
@@ -2353,7 +2353,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Flying noclip";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,p in pairs(service.GetPlayers(plr,args[1])) do
 					Commands.Fly.Function(p, args, true)
@@ -2368,7 +2368,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Un-NoClips the target player(s)";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,p in pairs(service.GetPlayers(plr,args[1])) do
 					local old = p.Character.Humanoid:FindFirstChild("ADONIS_NoClip")
@@ -2393,7 +2393,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Jails the target player(s), removing their tools until they are un-jailed";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i, v in pairs(service.GetPlayers(plr, args[1])) do
 					if v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
@@ -2518,7 +2518,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "UnJails the target player(s) and returns any tools that were taken from them while jailed";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local found = false
 
@@ -2556,7 +2556,7 @@ return function(Vargs, env)
 			Commands = {"bchat";"dchat";"bubblechat";"dialogchat";};
 			Args = {"player";"color(red/green/blue/off)";};
 			Description = "Gives the target player(s) a little chat gui, when used will let them chat using dialog bubbles";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local color = Enum.ChatColor.Red
 				if not args[2] then
@@ -2651,7 +2651,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Makes the player(s) character completely local";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr, args[1])) do
 					Remote.MakeLocal(v,v.Character)
@@ -2666,7 +2666,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "UnPhases the target player(s)";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr, args[1])) do
 					Remote.MoveLocal(v,v.Character.Name,false,workspace)
@@ -2682,7 +2682,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Gives the target player(s) tools that are in the game's StarterPack";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr, args[1])) do
 					if v and v:FindFirstChild("Backpack") then
@@ -2705,7 +2705,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Gives the target player(s) a sword";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					if v:FindFirstChild("Backpack") then
@@ -2727,7 +2727,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Clones the target player(s)";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					Routine(function()
@@ -2767,7 +2767,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Changes specific players' character to the target's character. (i.g. To copy Player1's character, do ':copychar me Player1')";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				assert(args[1], "Argument #1 must be supplied.")
 				assert(args[2], "Argument #2 must be supplied. What player would you want to copy?")
@@ -2821,7 +2821,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Gives you a tool that lets you click where you want the target player to stand, hold r to rotate them";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					local scr = Deps.Assets.ClickTeleport:Clone()
@@ -2845,7 +2845,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Gives you a tool that lets you click where you want the target player to walk, hold r to rotate them";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					local scr = Deps.Assets.ClickTeleport:Clone()
@@ -2869,7 +2869,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Lets you take control of the target player";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr, args[1])) do
 					if v.Character then
@@ -2919,7 +2919,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Refreshes the target player(s)'s character";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,p in next,service.GetPlayers(plr, args[1]) do
 					task.defer(function()
@@ -3003,7 +3003,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Kills the target player(s)";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					local hum = v.Character:FindFirstChildWhichIsA("Humanoid")
@@ -3040,7 +3040,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Converts players' character to R6";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					Functions.ConvertPlayerCharacterToRig(v, "R6")
@@ -3055,7 +3055,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Converts players' character to R15";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					Functions.ConvertPlayerCharacterToRig(v, "R15")
@@ -3070,7 +3070,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Stuns the target player(s)";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					if v.Character and v.Character:FindFirstChild("Humanoid") then
@@ -3087,7 +3087,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "UnStuns the target player(s)";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					if v.Character and v.Character:FindFirstChild("Humanoid") then
@@ -3121,7 +3121,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Forces the target player(s) to sit";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i, v in pairs(service.GetPlayers(plr,args[1])) do
 					if v.Character and v.Character:FindFirstChild("Humanoid") then
@@ -3138,7 +3138,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Makes the target player(s) invisible";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i, v in next,service.GetPlayers(plr,args[1]) do
 					if v.Character then
@@ -3171,7 +3171,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Makes the target player(s) visible";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i, v in next,service.GetPlayers(plr,args[1]) do
 					if v.Character then
@@ -3204,7 +3204,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Locks the target player(s), preventing the use of btools on the character";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					if v.Character then
@@ -3227,7 +3227,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "UnLocks the the target player(s), makes it so you can use btools on them";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i, v in pairs(service.GetPlayers(plr,args[1])) do
 					if v.Character then
@@ -3250,7 +3250,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Makes a PointLight on the target player(s) with the color specified";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local str = BrickColor.new('Bright blue').Color
 
@@ -3279,7 +3279,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "UnLights the target player(s)";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					if v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
@@ -3296,7 +3296,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Change Ambient";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local r,g,b = 1,1,1
 				if args[1] and args[1]:match("(.*),(.*),(.*)") then
@@ -3321,7 +3321,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Change OutdoorAmbient";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local r,g,b = 1,1,1
 				if args[1] and args[1]:match("(.*),(.*),(.*)") then
@@ -3346,7 +3346,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Fog Off";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				if args[1] then
 					for i,v in pairs(service.GetPlayers(plr,args[1])) do
@@ -3365,7 +3365,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Determines if shadows are on or off";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				if args[1]:lower()=='on' or args[1]:lower()=="true" then
 					if args[2] then
@@ -3394,7 +3394,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Determines if outlines are on or off";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				if args[1]:lower()=='on' or args[1]:lower()=="true" then
 					if args[2] then
@@ -3423,7 +3423,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Change Brightness";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				if args[2] then
 					for i,v in pairs(service.GetPlayers(plr,args[2])) do
@@ -3442,7 +3442,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Change Time";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				if args[2] then
 					for i,v in pairs(service.GetPlayers(plr,args[2])) do
@@ -3462,7 +3462,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Fog Color";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				if args[4] then
 					for i,v in pairs(service.GetPlayers(plr,args[4])) do
@@ -3481,7 +3481,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Fog Start/End";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				if args[3] then
 					for i,v in pairs(service.GetPlayers(plr,args[3])) do
@@ -3504,7 +3504,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Places the desired tool into the target player(s)'s StarterPack";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local found = {}
 				local temp = service.New("Folder")
@@ -3543,7 +3543,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Removes the desired tool from the target player(s)'s StarterPack";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i, v in pairs(service.GetPlayers(plr, args[1]:lower())) do
 					if v:FindFirstChild("StarterGear") then
@@ -3566,7 +3566,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Gives the target player(s) the desired tool(s)";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local found = {}
 				local temp = service.New("Folder")
@@ -3605,7 +3605,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Steals player1's tools and gives them to player2";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local p1 = service.GetPlayers(plr, args[1])
 				local p2 = service.GetPlayers(plr, args[2])
@@ -3628,7 +3628,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Copies player1's tools and gives them to player2";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local p1 = service.GetPlayers(plr, args[1])
 				local p2 = service.GetPlayers(plr, args[2])
@@ -3649,7 +3649,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Remove the target player(s)'s screen guis";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					Remote.LoadCode(v,[[for i,v in pairs(service.PlayerGui:GetChildren()) do if not client.Core.GetGui(v) then v:Destroy() end end]])
@@ -3664,7 +3664,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Remove the target player(s)'s tools";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					if v.Character and v:FindFirstChild("Backpack") then
@@ -3682,7 +3682,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Shows you what rank the target player(s) are in the group specified by groupID";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					if  v:IsInGroup(args[2]) then
@@ -3701,7 +3701,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Removes <number> HP from the target player(s)";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					if v.Character and v.Character:FindFirstChild("Humanoid") then
@@ -3719,7 +3719,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Set the target player(s)'s health to <number>";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					if v and v.Character and v.Character:FindFirstChild("Humanoid") then
@@ -3737,7 +3737,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Set the target player(s)'s jump power to <number>";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				assert(args[1],"Argument missing or nil")
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
@@ -3757,7 +3757,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Set the target player(s)'s jump height to <number>";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				assert(args[1],"Argument missing or nil")
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
@@ -3777,7 +3777,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Set the target player(s)'s WalkSpeed to <number>";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				assert(args[1],"Argument missing or nil")
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
@@ -3815,7 +3815,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Randomize teams; :rteams or :rteams all or :rteams nonadmins team1,team2,etc";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local tArgs = {}
 				local teams = {}
@@ -3875,7 +3875,7 @@ return function(Vargs, env)
 			Description = "Takes the target player(s) off of a team and sets them to 'Neutral' ";
 			Hidden = false;
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for _,player in ipairs(Functions.GetPlayers(plr, args[1])) do
 					player.Neutral = true
@@ -3892,7 +3892,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Set the target player(s)'s field of view to <number> (min 1, max 120)";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				assert(args[1] and args[2] and tonumber(args[2]), "Argument missing or invalid")
 				for i,v in next,service.GetPlayers(plr, args[1]) do
@@ -3908,7 +3908,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Teleport the target player(s) to the place belonging to <placeID> or a reserved server";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local id = tonumber(args[2])
 				local players = service.GetPlayers(plr,args[1])
@@ -3949,7 +3949,7 @@ return function(Vargs, env)
 			Args = {"serverName";"(optional) placeId";};
 			Filter = true;
 			Description = "Makes a private server that you can teleport yourself and friends to using :place player(s) serverName; Will overwrite servers with the same name; Caps specific";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local place = tonumber(args[2]) or game.PlaceId
 				local code = service.TeleportService:ReserveServer(place)
@@ -3967,7 +3967,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Deletes a private server from the list.";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local servers = Core.GetData("PrivateServers") or {}
 				if servers[args[1]] then
@@ -3987,7 +3987,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Shows you a list of private servers that were created with :makeserver";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local servers = Core.GetData("PrivateServers") or {}
 				local tab = {}
@@ -4005,7 +4005,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Teleports the target player(s) to the Group Recruiting Plaza to look for potential group members";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					Remote.MakeGui(v,"Notification",{
@@ -4138,7 +4138,7 @@ return function(Vargs, env)
 			Args = {"player";"stat";"value";};
 			Filter = true;
 			Description = "Change the target player(s)'s leader stat <stat> value to <value>";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					if v:FindFirstChild("leaderstats") then
@@ -4159,7 +4159,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Add <value> to <stat>";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					if v:FindFirstChild("leaderstats") then
@@ -4180,7 +4180,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Subtract <value> from <stat>";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					if v:FindFirstChild("leaderstats") then
@@ -4201,7 +4201,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Give the target player(s) the shirt that belongs to <ID>";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local ClothingId = tonumber(args[2])
 				local AssetIdType = service.MarketPlace:GetProductInfo(ClothingId).AssetTypeId
@@ -4228,7 +4228,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Give the target player(s) the pants that belongs to <id>";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local ClothingId = tonumber(args[2])
 				local AssetIdType = service.MarketPlace:GetProductInfo(ClothingId).AssetTypeId
@@ -4255,7 +4255,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Give the target player(s) the face that belongs to <id>";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local faceId = assert(tonumber(args[2]), "Invalid asset ID provided")
 				local faceAssetTypeId = service.MarketPlace:GetProductInfo(tonumber(args[2])).AssetTypeId
@@ -4301,7 +4301,7 @@ return function(Vargs, env)
 			Commands = {"taudio";"localsound";"localaudio";"lsound";"laudio";};
 			Args = {"player", "audioId", "noLoop", "pitch", "volume";};
 			Description = "Lets you play an audio on the player's client";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args,data)
 
 				assert(args[1] and args[2],"Argument missing or nil")
@@ -4353,7 +4353,7 @@ return function(Vargs, env)
 			Commands = {"untaudio";"unlocalsound";"unlocalaudio";"unlsound";"unlaudio";};
 			Args = {"player";};
 			Description = "Lets you stop audio playing on the player's client";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args,data)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					Remote.Send(v,"Function","StopAudio","all")
@@ -4367,7 +4367,7 @@ return function(Vargs, env)
 			Commands = {"charaudio", "charactermusic", "charmusic"};
 			Args = {"player", "audioId"};
 			Description = "Lets you place an audio in the target's character";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				assert(args[1] and args[2] and tonumber(args[2]), "Argument missing or invalid")
 				local audio = service.New("Sound", {
@@ -4393,7 +4393,7 @@ return function(Vargs, env)
 			Commands = {"uncharaudio", "uncharactermusic", "uncharmusic"};
 			Args = {"player"};
 			Description = "Removes audio placed into character via :charaudio command";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr, args)
 				for i,v in next,Functions.GetPlayers(plr, args[1]) do
 					local char = v.Character
@@ -4414,7 +4414,7 @@ return function(Vargs, env)
 			Commands = {"pause","pausemusic","psound","pausesound";};
 			Args = {};
 			Description = "Pauses the current playing song";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args,data)
 				for i,v in ipairs(workspace:GetChildren()) do
 					if v.Name=="ADONIS_SOUND" then
@@ -4435,7 +4435,7 @@ return function(Vargs, env)
 			Commands = {"resume","resumemusic","rsound","resumesound";};
 			Args = {};
 			Description = "Resumes the current playing song";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args,data)
 				for i,v in ipairs(workspace:GetChildren()) do
 					if v.Name=="ADONIS_SOUND" then
@@ -4456,7 +4456,7 @@ return function(Vargs, env)
 			Commands = {"pitch";};
 			Args = {"number";};
 			Description = "Change the pitch of the currently playing song";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local pitch = args[1]
 				for i,v in ipairs(workspace:GetChildren()) do
@@ -4479,7 +4479,7 @@ return function(Vargs, env)
 			Commands = {"volume","vol"};
 			Args = {"number"};
 			Description = "Change the volume of the currently playing song";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local volume = tonumber(args[1])
 				assert(volume, "Volume must be a valid number")
@@ -4504,7 +4504,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Play a list of songs automatically; Stop with :shuffle off";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				service.StopLoop("MusicShuffle")
 				Admin.RunCommand(Settings.Prefix.."stopmusic")
@@ -4562,7 +4562,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Start playing a song";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args,data)
 				local id = args[1]:lower()
 				local looped = args[2]
@@ -4665,7 +4665,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Stop the currently playing song";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i, v in ipairs(workspace:GetChildren()) do
 					if v.Name=="ADONIS_SOUND" then
@@ -4682,7 +4682,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Shows you the script's available music list";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local listforclient={}
 				for i, v in pairs(Variables.MusicList) do
@@ -4702,7 +4702,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Lets the target player(s) fly";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args,noclip)
 				local speed = tonumber(args[2]) or 2
 				local scr = Deps.Assets.Fly:Clone()
@@ -4762,7 +4762,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Change the target player(s) flight speed";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args,noclip)
 				local speed = tonumber(args[2])
 
@@ -4788,7 +4788,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Removes the target player(s)'s ability to fly";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					local part = v.Character:FindFirstChild("HumanoidRootPart")
@@ -4811,7 +4811,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Fling the target player(s)";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					Routine(function()
@@ -4838,7 +4838,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Super fling the target player(s)";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local strength = tonumber(args[2]) or 5e6
 				local scr = Deps.Assets.Sfling:Clone()
@@ -4858,7 +4858,7 @@ return function(Vargs, env)
 			Args = {"player";"name/hide";};
 			Filter = true;
 			Description = "Name the target player(s) <name> or say hide to hide their character name";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i, v in pairs(service.GetPlayers(plr,args[1])) do
 					local char = v.Character;
@@ -4891,7 +4891,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Put the target player(s)'s back to normal";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					local char = v.Character;
@@ -4914,7 +4914,7 @@ return function(Vargs, env)
 			Args = {"player";"name/hide";};
 			Filter = true;
 			Description = "Name the target player(s) <name> or say hide to hide their character name";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i, v in pairs(service.GetPlayers(plr,args[1])) do
 					if v.Character and v.Character:FindFirstChild("Head") then
@@ -4964,7 +4964,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Put the target player(s)'s back to normal";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					if v.Character and v.Character:FindFirstChild("Head") then
@@ -4986,7 +4986,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Removes the target player(s)'s Package";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					if v.Character then
@@ -5025,7 +5025,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Gives the target player(s) the desired package (ID MUST BE A NUMBER)";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				assert(args[1] and args[2] and tonumber(args[2]), "Argument 1 or 2 is not supplied properly")
 
@@ -5091,7 +5091,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Changes the target player(s)'s character appearence to <ID/Name>. If you want to supply a UserId, supply with 'userid-', followed by a number after 'userid'.";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				assert(args[1], "Argument #1 must be filled")
 				assert(args[2], "Argument #2 must be filled")
@@ -5132,7 +5132,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Put the target player(s)'s character appearence back to normal";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					Routine(function()
@@ -5159,7 +5159,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Loop heals the target player(s)";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					service.StartLoop(v.userId.."LOOPHEAL",1,function()
@@ -5176,7 +5176,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "UnLoop Heal";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					service.StopLoop(v.userId.."LOOPHEAL")
@@ -5541,7 +5541,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Makes it so the target player(s)'s cam can move around freely (Press Space or Shift+P to toggle freecam)";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr, args[1])) do
 					local plrgui = v:FindFirstChildOfClass"PlayerGui"
@@ -5566,7 +5566,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "UnFreecam";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr, args[1])) do
 					local plrgui = v:FindFirstChildOfClass"PlayerGui"
@@ -5592,7 +5592,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "Toggles Freecam";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr, args[1])) do
 					local plrgui = v:FindFirstChildOfClass"PlayerGui"
@@ -5615,7 +5615,7 @@ return function(Vargs, env)
 			Hidden = false;
 			Description = "AI bots made for training; ':bot scel 5 true true'";
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				local key = math.random()
 				local num = tonumber(args[2]) or 1
@@ -5714,7 +5714,7 @@ return function(Vargs, env)
 			Args = {"player";"message";};
 			Filter = true;
 			Description = "[WIP] Says the text you give it";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				for i,v in pairs(service.GetPlayers(plr,args[1])) do
 					Remote.Send(v,"Function","TextToSpeech",args[2])
@@ -5727,7 +5727,7 @@ return function(Vargs, env)
 			Commands = {"reverb","ambientreverb";};
 			Args = {"reverbType","optional player";};
 			Description = "Lets you change the reverb type with an optional player argument (CASE SENSITTIVE)";
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args,data)
 				local rev = args[1]
 
@@ -5767,7 +5767,7 @@ return function(Vargs, env)
 			Description = "Sets whether the target player(s) can reset their character";
 			Hidden = false;
 			Fun = false;
-			AdminLevel = "Moderators";
+			AdminLevel = "Admins"; -- "Moderators";
 			Function = function(plr,args)
 				assert(args[1] and args[2], "Argument missing or nil")
 				assert(args[2]:lower() == "true" or args[2]:lower() == "false", "Invalid argument #2 (boolean expected)")

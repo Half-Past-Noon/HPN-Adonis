@@ -1233,7 +1233,7 @@ return function(Vargs, env)
 			Commands = {"ban", "serverban"};
 			Args = {"player", "reason"};
 			Description = "Bans the player from the server";
-			AdminLevel = "Admins";
+			AdminLevel = "Moderators"; -- "Admins";
 			Filter = true;
 			Hidden = false;
 			Fun = false;
