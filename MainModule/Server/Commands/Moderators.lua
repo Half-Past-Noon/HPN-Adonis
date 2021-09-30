@@ -1700,7 +1700,7 @@ return function(Vargs, env)
 
 		AdminList = {
 			Prefix = Settings.Prefix;
-			Commands = {"admins";"adminlist";"headadmins";"owners";"Admins"; -- "Moderators";"ranks"};
+			Commands = {"admins";"adminlist";"headadmins";"owners";"moderators";"ranks"};
 			Args = {};
 			Hidden = false;
 			Description = "Shows you the list of admins, also shows admins that are currently in the server";
