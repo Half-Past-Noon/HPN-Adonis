@@ -107,7 +107,7 @@ return function(Vargs, env)
 			Commands = {"permban", "permanentban", "pban", "gameban", "saveban", "databan"};
 			Args = {"player", "reason"};
 			Description = "Bans the player from the game permenantly. If they join a different server they will be banned there too";
-			AdminLevel = "Admins" -- "HeadAdmins";
+			AdminLevel = "Admins"; -- "HeadAdmins";
 			Filter = true;
 			Hidden = false;
 			Fun = false;
@@ -134,7 +134,7 @@ return function(Vargs, env)
 			Commands = {"unpermban", "unpermanentban", "unpban", "ungameban", "saveunban", "undataban"};
 			Args = {"player";};
 			Description = "UnBans the player from game (Saves)";
-			AdminLevel = "Owners" -- "HeadAdmins";
+			AdminLevel = "Owners"; -- "HeadAdmins";
 			Function = function(plr,args)
 				local ret = Admin.RemoveBan(args[1], true)
 				if ret then
