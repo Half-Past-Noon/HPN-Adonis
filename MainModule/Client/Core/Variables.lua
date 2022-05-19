@@ -8,7 +8,10 @@ origEnv = nil
 logError = nil
 
 --// Special Variables
-return function()
+return function(Vargs, GetEnv)
+	local env = GetEnv(nil, {script = script})
+	setfenv(1, env)
+
 	local _G, game, script, getfenv, setfenv, workspace,
 		getmetatable, setmetatable, loadstring, coroutine,
 		rawequal, typeof, print, math, warn, error,  pcall,
@@ -17,7 +20,7 @@ return function()
 		newproxy, tostring, tonumber, Instance, TweenInfo, BrickColor,
 		NumberRange, ColorSequence, NumberSequence, ColorSequenceKeypoint,
 		NumberSequenceKeypoint, PhysicalProperties, Region3int16,
-		Vector3int16, elapsedTime, require, table, type, wait,
+		Vector3int16, require, table, type, wait,
 		Enum, UDim, UDim2, Vector2, Vector3, Region3, CFrame, Ray, delay =
 		_G, game, script, getfenv, setfenv, workspace,
 		getmetatable, setmetatable, loadstring, coroutine,
@@ -27,12 +30,13 @@ return function()
 		newproxy, tostring, tonumber, Instance, TweenInfo, BrickColor,
 		NumberRange, ColorSequence, NumberSequence, ColorSequenceKeypoint,
 		NumberSequenceKeypoint, PhysicalProperties, Region3int16,
-		Vector3int16, elapsedTime, require, table, type, wait,
+		Vector3int16, require, table, type, wait,
 		Enum, UDim, UDim2, Vector2, Vector3, Region3, CFrame, Ray, delay
 
 	local script = script
-	local service = service
-	local client = client
+	local service = Vargs.Service
+	local client = Vargs.Client
+
 	local Anti, Core, Functions, Process, Remote, UI, Variables
 	local function Init()
 		UI = client.UI;
@@ -104,7 +108,6 @@ return function()
 		ParticlesEnabled = true;
 		CapesEnabled = true;
 		HideChatCommands = false;
-		PrivacyMode = false;
 		Particles = {};
 		KeyBinds = {};
 		Aliases = {};
@@ -112,6 +115,7 @@ return function()
 		savedUI = {};
 		localSounds = {};
 		ESPObjects = {};
+		CommunicationsHistory = {};
 		LightingSettings = {
 			Ambient = service.Lighting.Ambient;
 			Brightness = service.Lighting.Brightness;

@@ -13,7 +13,7 @@ return function(data)
 		Name  = "Vote";
 		Title = "Vote";
 		Size  = {300,200};
-		AllowMultiple = false;
+		Icon = client.MatIcons.Poll;
 		OnClose = function()
 			if not selected then
 				selected = false

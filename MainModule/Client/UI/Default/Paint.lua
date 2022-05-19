@@ -1,5 +1,4 @@
-client = nil
-service = nil
+client, service = nil, nil
 
 return function(data)
 	local mouse = service.Players.LocalPlayer:GetMouse()
@@ -8,6 +7,7 @@ return function(data)
 	local window = client.UI.Make("Window", {
 		Name  = "Paint";
 		Title = "Paint";
+		Icon = client.MatIcons.Palette;
 	})
 
 	local topbar = window:Add("Frame", {
@@ -120,11 +120,11 @@ return function(data)
 				TextXAlignment = "Right";
 				ClipsDescendants = true;
 				TextChanged = function(text, enter, new)
-					if enter and tonumber(text) then
+					if tonumber(text) then
 						if tonumber(text) < 100 then
-							pointer.Size = UDim2.new(0, text, 0, text);
+							pointer.Size = UDim2.new(0, text, 0, text)
 						else
-							pointer.Size = UDim2.new(0, 99, 0, 99);
+							pointer.Size = UDim2.new(0, 99, 0, 99)
 						end
 					end
 				end

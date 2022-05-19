@@ -6,9 +6,13 @@ Routine = nil
 GetEnv = nil
 origEnv = nil
 logError = nil
+log = nil
 
 --// Core
-return function()
+return function(Vargs, GetEnv)
+	local env = GetEnv(nil, {script = script})
+	setfenv(1, env)
+
 	local _G, game, script, getfenv, setfenv, workspace,
 		getmetatable, setmetatable, loadstring, coroutine,
 		rawequal, typeof, print, math, warn, error,  pcall,
@@ -17,7 +21,7 @@ return function()
 		newproxy, tostring, tonumber, Instance, TweenInfo, BrickColor,
 		NumberRange, ColorSequence, NumberSequence, ColorSequenceKeypoint,
 		NumberSequenceKeypoint, PhysicalProperties, Region3int16,
-		Vector3int16, elapsedTime, require, table, type, wait,
+		Vector3int16, require, table, type, wait,
 		Enum, UDim, UDim2, Vector2, Vector3, Region3, CFrame, Ray, delay =
 		_G, game, script, getfenv, setfenv, workspace,
 		getmetatable, setmetatable, loadstring, coroutine,
@@ -27,12 +31,12 @@ return function()
 		newproxy, tostring, tonumber, Instance, TweenInfo, BrickColor,
 		NumberRange, ColorSequence, NumberSequence, ColorSequenceKeypoint,
 		NumberSequenceKeypoint, PhysicalProperties, Region3int16,
-		Vector3int16, elapsedTime, require, table, type, wait,
+		Vector3int16, require, table, type, wait,
 		Enum, UDim, UDim2, Vector2, Vector3, Region3, CFrame, Ray, delay
 
 	local script = script
-	local service = service
-	local client = client
+	local service = Vargs.Service
+	local client = Vargs.Client
 	local Anti, Core, Functions, Process, Remote, UI, Variables
 	local function Init()
 		UI = client.UI;
@@ -106,7 +110,7 @@ return function()
 	client.Core = {
 		Init = Init;
 		RunLast = RunLast;
-		RunAfterLoaded = RunAfterLoaded;
+		--RunAfterLoaded = RunAfterLoaded;
 		RunAfterPlugins = RunAfterPlugins;
 		Name = script.Name;
 		Special = script.Name;
@@ -311,16 +315,10 @@ return function()
 							return data.Source, module
 						end
 					end);
-
-					ReportLBI = MetaFunc(function(scr, origin)
-						if origin == "Local" then
-							return true
-						end
-					end);
 				}, nil, nil, true);
 			}
 
-			AdonisGTable = NewProxy{
+			local AdonisGTable = NewProxy({
 				__index = function(tab,ind)
 					if ind == "Scripts" then
 						return API.Scripts
@@ -334,17 +332,27 @@ return function()
 						error("_G API is disabled")
 					end
 				end;
-				__newindex = function(tabl,ind,new)
+				__newindex = function()
 					error("Read-only")
 				end;
 				__metatable = "API";
-			}
+			})
 
-			if not _G.Adonis then
-				rawset(_G,"Adonis",AdonisGTable)
-				StartLoop("APICheck",1,function()
-					rawset(_G,"Adonis",AdonisGTable)
-				end, true)
+			if not rawget(_G, "Adonis") then
+				if table.isfrozen and not table.isfrozen(_G) or not table.isfrozen then
+					rawset(_G, "Adonis", AdonisGTable)
+					StartLoop("APICheck", 1, function()
+						if rawget(_G, "Adonis") ~= AdonisGTable then
+							if table.isfrozen and not table.isfrozen(_G) or not table.isfrozen then
+								rawset(_G, "Adonis", AdonisGTable)
+							else
+								warn("ADONIS CRITICAL WARNING! MALICIOUS CODE IS TRYING TO CHANGE THE ADONIS _G API AND IT CAN'T BE SET BACK! PLEASE SHUTDOWN THE SERVER AND REMOVE THE MALICIOUS CODE IF POSSIBLE!")
+							end
+						end
+					end, true)
+				else
+					warn("The _G table was locked and the Adonis _G API could not be loaded")
+				end
 			end
 		end;
 	};
