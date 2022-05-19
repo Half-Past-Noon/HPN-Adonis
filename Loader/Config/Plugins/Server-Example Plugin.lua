@@ -1,4 +1,3 @@
---!nolint UnknownGlobal
 --[[
 	SERVER PLUGINS' NAMES MUST START WITH "Server:" OR "Server-"
 	CLIENT PLUGINS' NAMES MUST START WITH "Client:" OR "Client-"
@@ -14,7 +13,7 @@
 		print(msg..' from '..plr.Name..' Example Plugin')
 	end)
 
-	service.Events.PlayerJoined(function(p)
+	service.Events.PlayerAdded(function(p)
 		print(p.Name..' Joined! Example Plugin')
 	end)
 
@@ -24,7 +23,9 @@
 
 --]]
 
-return function()
+return function(Vargs)
+	local server, service = Vargs.Server, Vargs.Service
+
 	server.Commands.ExampleCommand = {
 		Prefix = server.Settings.Prefix;	-- Prefix to use for command
 		Commands = {"example"};	-- Commands

@@ -1,10 +1,12 @@
 client = nil
 service = nil
+
 return function(data)
 	local gTable
-	local window = client.UI.Make("Window",{
+	local window = client.UI.Make("Window", {
 		Name  = "CreateCard";
 		Title = "Create Card";
+		Icon = client.MatIcons["Add circle"];
 		Size  = {400, 330};
 		AllowMultiple = false;
 		OnClose = function()
@@ -13,7 +15,7 @@ return function(data)
 	})
 	
 	if window then
-		window:Add("TextLabel",{
+		window:Add("TextLabel", {
 			Text = "List Name:  ";
 			BackgroundTransparency = 1;
 			Size = UDim2.new(0, 80, 0, 30);
@@ -54,11 +56,11 @@ return function(data)
 				if not done then
 					done = true
 					window:Destroy()
-					client.Remote.Send("TrelloOperation",{
-						Action = "MakeCard",
-						List = list.Text,
-						Name = name.Text,
-						Desc = desc.Text
+					client.Remote.Send("TrelloOperation", {
+						Action = "MakeCard";
+						List = list.Text;
+						Name = name.Text;
+						Desc = desc.Text;
 					})
 				end
 			end

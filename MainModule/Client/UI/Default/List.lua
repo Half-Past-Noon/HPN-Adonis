@@ -1,10 +1,10 @@
-
-client = nil
-service = nil
+client, service = nil, nil
 
 return function(data)
+	local Name = data.Name
 	local Title = data.Title
 	local TitleButtons = data.TitleButtons or {}
+	local Icon = data.Icon
 	local Tabs = data.Tabs
 	local Tab = data.Table or data.Tab
 	local Update = data.Update
@@ -24,6 +24,7 @@ return function(data)
 	local PageCounter = PageNumber or 1;
 	local RichText = data.RichTextSupported or data.RichTextAllowed or data.RichText;
 	local TextSelectable = data.TextSelectable
+	local TimeOptions = data.TimeOptions
 	local getListTab, getPage
 	local doSearch, genList
 	local window, scroller, search
@@ -101,7 +102,7 @@ return function(data)
 			end
 
 			if v.Time then
-				v.Text = "["..(typeof(v.Time) == "number" and service.FormatTime(v.Time) or v.Time).."] "..v.Text
+				v.Text = "["..(typeof(v.Time) == "number" and service.FormatTime(v.Time, TimeOptions) or v.Time).."] "..v.Text
 			end
 		end
 
@@ -110,9 +111,9 @@ return function(data)
 
 	function doSearch(tab, text)
 		local found = {}
-		text = tostring(text):lower()
-		for i,v in next,tab do
-			if text == "" or (type(v) == "string" and v:lower():find(text)) or (type(v) == "table" and ((v.Text and tostring(v.Text):lower():find(text)) or (v.Filter and v.Filter:lower():find(text)))) then
+		text = string.lower(tostring(text)):gsub("%%", "%%%%"):gsub("%[", "%%["):gsub("%]", "%%]")
+		for i,v in pairs(tab) do
+			if text == "" or (type(v) == "string" and string.find(string.lower(v),text)) or (type(v) == "table" and ((v.Text and string.find(string.lower(tostring(v.Text)), text)) or (v.Filter and string.find(string.lower(v.Filter),text)))) then
 				table.insert(found, v)
 			end
 		end
@@ -160,7 +161,7 @@ return function(data)
 				pageCounterLabel.Visible = false;
 			end
 
-			for i,v in next,scroller:GetChildren() do
+			for i,v in ipairs(scroller:GetChildren()) do
 				v:Destroy()
 			end
 
@@ -171,10 +172,11 @@ return function(data)
 		end
 	end
 
-	window = client.UI.Make("Window",{
-		Name  = "List";
+	window = client.UI.Make("Window", {
+		Name = data.Name or "List";
 		Title = Title;
-		Size  = Size or {240, 225};
+		Icon = Icon;
+		Size = Size or {240, 225};
 		MinSize = {150, 100};
 		OnRefresh = Update and function()
 			Tab = client.Remote.Get("UpdateList", Update, unpack(UpdateArgs or {UpdateArg}))
@@ -187,7 +189,7 @@ return function(data)
 		RichTextSupport = data.RichTextSupport or data.SupportRichText or false;
 	})
 
-	scroller = window:Add("ScrollingFrame",{
+	scroller = window:Add("ScrollingFrame", {
 		List = {};
 		ScrollBarThickness = 2;
 		BackgroundTransparency = 1;

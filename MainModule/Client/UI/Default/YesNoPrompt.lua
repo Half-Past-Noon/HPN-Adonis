@@ -1,17 +1,15 @@
-
-client = nil
-service = nil
+client, service = nil, nil
 
 return function(data)
 	local gTable
 	local answer
 	
-	local window = client.UI.Make("Window",{
-		Name  = "Prompt";
+	local window = client.UI.Make("Window", {
+		Name  = data.Name or "Prompt";
 		Title = data.Title or "Prompt";
 		Size  = data.Size or {225,150};
 		SizeLocked = true;
-		--Icon = "rbxassetid://136615916";
+		Icon = client.MatIcons.Help;
 		OnClose = function()
 			if not answer then
 				answer = "No"
@@ -19,7 +17,7 @@ return function(data)
 		end
 	})
 	
-	local label = window:Add("TextLabel",{
+	local label = window:Add("TextLabel", {
 		Text = data.Question;
 		Font = "SourceSans";
 		TextScaled = true;
@@ -28,7 +26,7 @@ return function(data)
 		Size = UDim2.new(1, -10, 0.7, -5);
 	})
 	
-	local yes = window:Add("TextButton",{
+	local yes = window:Add("TextButton", {
 		Text = "Yes";
 		Font = "Arial";
 		TextSize = 18;
@@ -38,7 +36,7 @@ return function(data)
 		BackgroundTransparency = 0.5;
 	})
 	
-	local no = window:Add("TextButton",{
+	local no = window:Add("TextButton", {
 		Text = "No";
 		Font = "Arial";
 		TextSize = 18;

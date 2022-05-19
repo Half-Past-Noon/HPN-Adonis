@@ -64,6 +64,7 @@ return function(Vargs)
 				PlayerScripts = Instance.new("Folder");
 				Kick = function() fakePlayer:Destroy() fakePlayer:SetSpecial("Parent", nil) end;
 				IsA = function(ignore, arg) if arg == "Player" then return true end end;
+				GetRankInGroup = function() return 0 end;
 			}
 
 			for i,v in next,data do fakePlayer:SetSpecial(i, v) end
@@ -73,6 +74,18 @@ return function(Vargs)
 
 		Loadstring = function(jobId, source)
 			Core.Loadstring(source, GetEnv{})()
+		end;
+		
+		Message = function(jobId, fromPlayer, message, time)
+			server.Functions.Message("Global Message from " .. tostring(fromPlayer), message, service.GetPlayers(), true, time)
+		end;
+		
+		RemovePlayer = function(jobId, name, BanMessage, reason)
+			--// probably should move this to userid
+			local player =	service.Players:FindFirstChild(name)
+			if player then
+				player:Kick(string.format("%s | Reason: %s", BanMessage, reason))
+			end
 		end;
 
 		DataStoreUpdate = function(jobId, type, data)
@@ -134,7 +147,7 @@ return function(Vargs)
 
 	Commands.CrossServerList = {
 		Prefix = Settings.Prefix;
-		Commands = {"serverlist", "servers", "crossserverlist", "listservers"};
+		Commands = {"serverlist", "gameservers", "crossserverlist", "listservers"};
 		Args = {};
 		Description = "Attempts to list all active servers (at the time the command was ran)";
 		AdminLevel = "Admins";

@@ -1,19 +1,18 @@
-
-client = nil
-service = nil
+client, service = nil, nil
 
 return function(data)
 	local color = data.Color or Color3.new(1, 1, 1)
-	local red,green,blue = color.r,color.g,color.b
-	local redSlider,greenSlider,blueSlider
-	local redBox,greenBox,blueBox
+	local red, green, blue = color.r, color.g, color.b
+	local redSlider, greenSlider, blueSlider
+	local redBox, greenBox, blueBox
 	local ySize = 25
 	local returnColor
 	local gTable
 	
-	local window = client.UI.Make("Window",{
+	local window = client.UI.Make("Window", {
 		Name  = "ColorPicker";
 		Title = data.Title or "Color Picker";
+		Icon = client.MatIcons.Create;
 		Size  = {250,230};
 		MinSize = {150, 230};
 		MaxSize = {math.huge, 230};
@@ -26,13 +25,13 @@ return function(data)
 		end
 	})
 	
-	local colorBox = window:Add("Frame",{
+	local colorBox = window:Add("Frame", {
 		Size = UDim2.new(1, -10, 0, ySize-5);
 		Position = UDim2.new(0, 5, 0, ySize*6);
 		BackgroundColor3 = color;
 	})
 	
-	local okButton = window:Add("TextButton",{
+	local okButton = window:Add("TextButton", {
 		Text = "Accept";
 		Size = UDim2.new(1, -10, 0, ySize-5);
 		Position = UDim2.new(0, 5, 0, ySize*7);
@@ -61,7 +60,7 @@ return function(data)
 		blueSlider:SetValue(blue)
 	end
 	
-	redBox = window:Add("StringEntry",{
+	redBox = window:Add("StringEntry", {
 		Text = "Red: ";
 		BoxText = red*255;
 		BackgroundTransparency = 1;
@@ -89,7 +88,7 @@ return function(data)
 		end;
 	})
 	
-	greenBox = window:Add("StringEntry",{
+	greenBox = window:Add("StringEntry", {
 		Text = "Green: ";
 		BoxText = green*255;
 		BackgroundTransparency = 1;
@@ -117,7 +116,7 @@ return function(data)
 		end;
 	})
 	
-	blueBox = window:Add("StringEntry",{
+	blueBox = window:Add("StringEntry", {
 		Text = "Blue: ";
 		BoxText = blue*255;
 		BackgroundTransparency = 1;
@@ -145,7 +144,7 @@ return function(data)
 		end;
 	})
 	
-	redSlider = window:Add("Slider",{
+	redSlider = window:Add("Slider", {
 		Percent = color.r;
 		Size = UDim2.new(1, -20, 0, ySize-5);
 		Position = UDim2.new(0, 10, 0, ySize*1);
@@ -155,7 +154,7 @@ return function(data)
 		end
 	})
 	
-	greenSlider = window:Add("Slider",{
+	greenSlider = window:Add("Slider", {
 		Percent = color.r;
 		Size = UDim2.new(1, -20, 0, ySize-5);
 		Position = UDim2.new(0, 10, 0, ySize*3);
@@ -165,7 +164,7 @@ return function(data)
 		end
 	})
 	
-	blueSlider = window:Add("Slider",{
+	blueSlider = window:Add("Slider", {
 		Percent = color.r;
 		Size = UDim2.new(1, -20, 0, ySize-5);
 		Position = UDim2.new(0, 10, 0, ySize*5);

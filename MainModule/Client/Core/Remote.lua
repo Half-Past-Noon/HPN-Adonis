@@ -6,9 +6,13 @@ Routine = nil
 GetEnv = nil
 origEnv = nil
 logError = nil
+log = nil
 
 --// Remote
-return function()
+return function(Vargs, GetEnv)
+	local env = GetEnv(nil, {script = script})
+	setfenv(1, env)
+
 	local _G, game, script, getfenv, setfenv, workspace,
 		getmetatable, setmetatable, loadstring, coroutine,
 		rawequal, typeof, print, math, warn, error,  pcall,
@@ -17,7 +21,7 @@ return function()
 		newproxy, tostring, tonumber, Instance, TweenInfo, BrickColor,
 		NumberRange, ColorSequence, NumberSequence, ColorSequenceKeypoint,
 		NumberSequenceKeypoint, PhysicalProperties, Region3int16,
-		Vector3int16, elapsedTime, require, table, type, wait,
+		Vector3int16, require, table, type, wait,
 		Enum, UDim, UDim2, Vector2, Vector3, Region3, CFrame, Ray, delay =
 		_G, game, script, getfenv, setfenv, workspace,
 		getmetatable, setmetatable, loadstring, coroutine,
@@ -27,12 +31,12 @@ return function()
 		newproxy, tostring, tonumber, Instance, TweenInfo, BrickColor,
 		NumberRange, ColorSequence, NumberSequence, ColorSequenceKeypoint,
 		NumberSequenceKeypoint, PhysicalProperties, Region3int16,
-		Vector3int16, elapsedTime, require, table, type, wait,
+		Vector3int16, require, table, type, wait,
 		Enum, UDim, UDim2, Vector2, Vector3, Region3, CFrame, Ray, delay
 
 	local script = script
-	local service = service
-	local client = client
+	local service = Vargs.Service
+	local client = Vargs.Client
 	local Anti, Core, Functions, Process, Remote, UI, Variables
 	local function Init()
 		UI = client.UI;
@@ -215,7 +219,7 @@ return function()
 			InstanceList = function(args)
 				local objects = service.GetAdonisObjects()
 				local temp = {}
-				for i,v in next,objects do
+				for i,v in pairs(objects) do
 					table.insert(temp, {
 						Text = v:GetFullName();
 						Desc = v.ClassName;
@@ -228,7 +232,7 @@ return function()
 				local temp={}
 				local function toTab(str, desc, color)
 					for i,v in next,service.ExtractLines(str) do
-						table.insert(temp,{Text = v,Desc = desc..v, Color = color})
+						table.insert(temp, {Text = v; Desc = desc..v; Color = color;})
 					end
 				end
 
@@ -238,30 +242,28 @@ return function()
 				end
 
 				return temp
-			end
+			end;
+
+			LocallyFormattedTime = function(args)
+				if type(args[1]) == "table" then
+					local results = {}
+					for i, t in ipairs(args[1]) do
+						results[i] = service.FormatTime(t, select(2, unpack(args)))
+					end
+					return results
+				end
+				return service.FormatTime(unpack(args))
+			end;
 		};
 
-		UnEncrypted = {
-			LightingChange = function(prop,val)
-				print(prop,"TICKLE ME!?")
-				Variables.LightingChanged = true
-				service.Lighting[prop] = val
-				Anti.LastChanges.Lighting = prop
-				wait(.1)
-				Variables.LightingChanged = false
-				print("TICKLED :)",Variables.LightingChanged)
-				if Anti.LastChanges.Lighting == prop then
-					Anti.LastChanges.Lighting = nil
-				end
-			end
-		};
+		UnEncrypted = {};
 
 		Commands = {
 			GetReturn = function(args)
 				print("THE SERVER IS ASKING US FOR A RETURN");
 				local com = args[1]
 				local key = args[2]
-				local parms = {unpack(args,3)}
+				local parms = {unpack(args, 3)}
 				local retfunc = Remote.Returnables[com]
 				local retable = (retfunc and {pcall(retfunc,parms)}) or {}
 				if retable[1] ~= true then
@@ -278,20 +280,20 @@ return function()
 				if Remote.PendingReturns[args[1]] then
 					print("VALID PENDING RETURN")
 					Remote.PendingReturns[args[1]] = nil
-					service.Events[args[1]]:fire(unpack(args,2))
+					service.Events[args[1]]:Fire(unpack(args, 2))
 				end
 			end;
 
 			SessionData = function(args)
 				local sessionKey = args[1];
 				if sessionKey then
-					service.Events.SessionData:Fire(sessionKey, table.unpack(args, 2));
+					service.Events.SessionData:Fire(sessionKey, table.unpack(args, 2))
 				end
 			end;
 
 			SetVariables = function(args)
 				local vars = args[1]
-				for var,val in next,vars do
+				for var, val in pairs(vars) do
 					Variables[var] = val
 				end
 			end;
@@ -340,6 +342,19 @@ return function()
 			RemoveUI = function(args)
 				UI.Remove(args[1],args[2])
 			end;
+				
+			RefreshUI = function(args)
+				local guiName = args[1]
+				local ignore = args[2]
+				
+				UI.Remove(guiName,ignore)
+				
+				local themeData = args[3]
+				local guiData = args[4]
+
+				Variables.LastServerTheme = themeData or Variables.LastServerTheme;
+				UI.Make(guiName,guiData,themeData)
+			end;
 
 			StartLoop = function(args)
 				local name = args[1]
@@ -367,7 +382,7 @@ return function()
 				if handler and type(handler) == "function" then
 					Pcall(handler, unpack(args, 2))
 				end
-			end
+			end;
 		};
 
 		Fire = function(...)

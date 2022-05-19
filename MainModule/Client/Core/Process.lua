@@ -6,9 +6,13 @@ Routine = nil
 GetEnv = nil
 origEnv = nil
 logError = nil
+log = nil
 
 --// Processing
-return function()
+return function(Vargs, GetEnv)
+	local env = GetEnv(nil, {script = script})
+	setfenv(1, env)
+
 	local _G, game, script, getfenv, setfenv, workspace,
 		getmetatable, setmetatable, loadstring, coroutine,
 		rawequal, typeof, print, math, warn, error,  pcall,
@@ -17,7 +21,7 @@ return function()
 		newproxy, tostring, tonumber, Instance, TweenInfo, BrickColor,
 		NumberRange, ColorSequence, NumberSequence, ColorSequenceKeypoint,
 		NumberSequenceKeypoint, PhysicalProperties, Region3int16,
-		Vector3int16, elapsedTime, require, table, type, wait,
+		Vector3int16, require, table, type, wait,
 		Enum, UDim, UDim2, Vector2, Vector3, Region3, CFrame, Ray, delay =
 		_G, game, script, getfenv, setfenv, workspace,
 		getmetatable, setmetatable, loadstring, coroutine,
@@ -27,12 +31,12 @@ return function()
 		newproxy, tostring, tonumber, Instance, TweenInfo, BrickColor,
 		NumberRange, ColorSequence, NumberSequence, ColorSequenceKeypoint,
 		NumberSequenceKeypoint, PhysicalProperties, Region3int16,
-		Vector3int16, elapsedTime, require, table, type, wait,
+		Vector3int16, require, table, type, wait,
 		Enum, UDim, UDim2, Vector2, Vector3, Region3, CFrame, Ray, delay
 
 	local script = script
-	local service = service
-	local client = client
+	local service = Vargs.Service
+	local client = Vargs.Client
 	local Anti, Core, Functions, Process, Remote, UI, Variables
 	local function Init()
 		UI = client.UI;
@@ -152,9 +156,9 @@ return function()
 				logError(tostring(Message).." - "..tostring(Trace))
 			end
 
-			if (Script == nil or (not Trace or Trace == "")) and not (Trace and string.find(Trace,"CoreGui.RobloxGui")) then
+			--if (Script == nil or (not Trace or Trace == "")) and not (Trace and string.find(Trace,"CoreGui.RobloxGui")) then
 				--Anti.Detected("log","Scriptless/Traceless error found. Script: "..tostring(Script).." - Trace: "..tostring(Trace))
-			end
+			--end
 		end;
 
 		Chat = function(msg)
@@ -165,7 +169,7 @@ return function()
 		end;
 
 		CharacterAdded = function(...)
-			service.Events.CharacterAdded:fire(...)
+			service.Events.CharacterAdded:Fire(...)
 
 			wait();
 			UI.GetHolder()
@@ -204,7 +208,7 @@ return function()
 				textbox:ReleaseFocus()
 			end
 
-			service.Events.CharacterRemoving:fire()
+			service.Events.CharacterRemoving:Fire()
 		end
 	}
 end

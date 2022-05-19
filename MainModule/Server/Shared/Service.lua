@@ -20,7 +20,7 @@ local methods = setmetatable({},{
 					RealMethods[class][index] = obj[index]
 				end
 
-				if RealMethods[class][index] ~= obj[index] or pcall(function() return coroutine.create(obj[index]) end) then
+				if RealMethods[class][index] ~= obj[index] then --or pcall(function() return coroutine.create(obj[index]) end) then
 					if ErrorHandler then
 						ErrorHandler("MethodError", debug.traceback() .. " || Cached method doesn't match found method: "..tostring(index), "Method: "..tostring(index), index)
 					end
@@ -36,7 +36,9 @@ local methods = setmetatable({},{
 })
 
 
-return function(errorHandler, eventChecker, fenceSpecific)
+return function(errorHandler, eventChecker, fenceSpecific, env)
+	if env then setfenv(1, env) end
+
 	local _G, game, script, getfenv, setfenv, workspace,
 	getmetatable, setmetatable, loadstring, coroutine,
 	rawequal, typeof, print, math, warn, error,  pcall,
@@ -45,18 +47,18 @@ return function(errorHandler, eventChecker, fenceSpecific)
 	newproxy, tostring, tonumber, Instance, TweenInfo, BrickColor,
 	NumberRange, ColorSequence, NumberSequence, ColorSequenceKeypoint,
 	NumberSequenceKeypoint, PhysicalProperties, Region3int16,
-	Vector3int16, elapsedTime, require, table, type, wait,
+	Vector3int16, require, table, type, wait,
 	Enum, UDim, UDim2, Vector2, Vector3, Region3, CFrame, Ray, delay, spawn, task, tick =
 		_G, game, script, getfenv, setfenv, workspace,
-	getmetatable, setmetatable, loadstring, coroutine,
-	rawequal, typeof, print, math, warn, error,  pcall,
-	xpcall, select, rawset, rawget, ipairs, pairs,
-	next, Rect, Axes, os, time, Faces, unpack, string, Color3,
-	newproxy, tostring, tonumber, Instance, TweenInfo, BrickColor,
-	NumberRange, ColorSequence, NumberSequence, ColorSequenceKeypoint,
-	NumberSequenceKeypoint, PhysicalProperties, Region3int16,
-	Vector3int16, elapsedTime, require, table, type, task.wait,
-	Enum, UDim, UDim2, Vector2, Vector3, Region3, CFrame, Ray, task.delay, task.defer, task, tick;
+		getmetatable, setmetatable, loadstring, coroutine,
+		rawequal, typeof, print, math, warn, error,  pcall,
+		xpcall, select, rawset, rawget, ipairs, pairs,
+		next, Rect, Axes, os, time, Faces, unpack, string, Color3,
+		newproxy, tostring, tonumber, Instance, TweenInfo, BrickColor,
+		NumberRange, ColorSequence, NumberSequence, ColorSequenceKeypoint,
+		NumberSequenceKeypoint, PhysicalProperties, Region3int16,
+		Vector3int16, require, table, type, task.wait,
+		Enum, UDim, UDim2, Vector2, Vector3, Region3, CFrame, Ray, task.delay, task.defer, task, tick;
 
 	main = server or client
 	ErrorHandler = errorHandler
@@ -86,7 +88,7 @@ return function(errorHandler, eventChecker, fenceSpecific)
 	local HelperService = Instance.new("Folder")
 	local EventService = Instance.new("Folder")
 
-	local Instance = {new = function(obj, parent) return service and client and service.Wrap(oldInstNew(obj, service.UnWrap(parent)), true) or oldInstNew(obj, parent) end}
+	local Instance = {new = function(obj, parent) local obj = oldInstNew(obj) if parent then obj.Parent = service.UnWrap(parent) end return service and client and service.Wrap(obj, true) or obj end}
 	local Events, Threads, Wrapper, Helpers = {
 		TrackTask = function(name, func, ...)
 			local index = (main and main.Functions and main.Functions:GetRandom()) or math.random();
@@ -145,23 +147,22 @@ return function(errorHandler, eventChecker, fenceSpecific)
 				Properties = props;
 				LinkedTasks = {};
 				RunnerEvent = service.New("BindableEvent");
+				Trigger = function(self, ...)
+					self.Event:Fire(...)
+				end;
+
+				Delete = function(self)
+					if not props.Temporary then
+						TaskSchedulers[taskName] = nil;
+					end
+
+					self.Running = false;
+					self.Event:Disconnect();
+				end;
 			}
 
-			function new:Trigger(self, ...)
-				self.Event:Fire(...)
-			end;
-
-			function new:Delete(self)
-				if not props.Temporary then
-					TaskSchedulers[taskName] = nil;
-				end
-
-				new.Running = false;
-				new.Event:Disconnect();
-			end;
-
 			new.Event = new.RunnerEvent.Event:Connect(function(...)
-				for i,v in next,new.LinkedTasks do
+				for i,v in pairs(new.LinkedTasks) do
 					local ran,result = pcall(v);
 					if result then
 						table.remove(new.LinkedTasks, i);
@@ -191,13 +192,13 @@ return function(errorHandler, eventChecker, fenceSpecific)
 		CheckEvents = function(waiting)
 			if true then return "Disabled" end
 			if waiting then
-				for ind,waiter in next,WaitingEvents do
+				for ind,waiter in pairs(WaitingEvents) do
 					if waiter.Waiting and waiter.Timeout ~= 0 and time() - waiter.Last > waiter.Timeout then
 						waiter:Remove()
 					end
 				end
 			else
-				for i,v in next,HookedEvents do
+				for i,v in pairs(HookedEvents) do
 					if #v == 0 then
 						HookedEvents[i] = nil
 					else
@@ -212,16 +213,15 @@ return function(errorHandler, eventChecker, fenceSpecific)
 		end;
 
 		ForEach = function(tab, func)
-			for i,v in next,tab do
+			for i,v in pairs(tab) do
 				func(tab, i, v)
 			end
 		end;
 
 		WrapEventArgs = function(tab)
 			local Wrap = service.Wrap
-			local UnWrap = service.UnWrap
-			local Wrapped = service.Wrapped
-			for i,v in next,tab do
+
+			for i,v in pairs(tab) do
 				if type(v) == "table" and v.__ISWRAPPED and v.__OBJECT then
 					tab[i] = Wrap(v.__OBJECT)
 				end
@@ -230,10 +230,10 @@ return function(errorHandler, eventChecker, fenceSpecific)
 		end;
 
 		UnWrapEventArgs = function(args)
-			local Wrap = service.Wrap
 			local UnWrap = service.UnWrap
 			local Wrapped = service.Wrapped
-			for i,v in next,args do
+
+			for i,v in pairs(args) do
 				if Wrapped(v) then
 					args[i] = {
 						__ISWRAPPED = true;
@@ -255,7 +255,7 @@ return function(errorHandler, eventChecker, fenceSpecific)
 				local hooks = {}
 
 				event.Event:Connect(function(...)
-					for i,v in next,hooks do
+					for i,v in pairs(hooks) do
 						return v.Function(...)
 					end
 				end)
@@ -373,7 +373,7 @@ return function(errorHandler, eventChecker, fenceSpecific)
 		Tasks = {};
 		Threads = {};
 		CheckTasks = function()
-			for i,task in next,service.Threads.Tasks do
+			for i,task in pairs(service.Threads.Tasks) do
 				if not task.Thread or task:Status() == "dead" then
 					task:Remove()
 				end
@@ -391,25 +391,25 @@ return function(errorHandler, eventChecker, fenceSpecific)
 				Changed = {};
 				Timeout = timeout or 0;
 				Running = false;
-				Function = func;
+				--Function = func;
 				R_Status = "Idle";
 				Finished = {};
 				Function = function(...) newTask.R_Status = "Running" newTask.Running = true local ret = {func(...)} newTask.R_Status = "Finished" newTask.Running = false newTask.Remove() return unpack(ret) end;
-				Remove = function() newTask.R_Status = "Removed" newTask.Running = false for i,v in pairs(service.Threads.Tasks) do if v == newTask then table.remove(service.Threads.Tasks,i) end end newTask.Changed:fire("Removed") newTask.Finished:fire() service.RemoveEvents(index.."_TASKCHANGED") service.RemoveEvents(index.."_TASKFINISHED") newTask.Thread = nil end;
+				Remove = function() newTask.R_Status = "Removed" newTask.Running = false for i,v in pairs(service.Threads.Tasks) do if v == newTask then table.remove(service.Threads.Tasks,i) end end newTask.Changed:Fire("Removed") newTask.Finished:Fire() service.RemoveEvents(index.."_TASKCHANGED") service.RemoveEvents(index.."_TASKFINISHED") newTask.Thread = nil end;
 				Thread = service.Threads.Create(function(...) return newTask.Function(...) end);
-				Resume = function(...) newTask.R_Status = "Resumed" newTask.Running = true newTask.Changed:fire("Resumed") local rets = {service.Threads.Resume(newTask.Thread,...)} if not rets[1] then ErrorHandler("TaskError", rets[2]) newTask.Changed:fire("Errored",rets[2]) newTask.Remove() end return unpack(rets) end;
+				Resume = function(...) newTask.R_Status = "Resumed" newTask.Running = true newTask.Changed:Fire("Resumed") local rets = {service.Threads.Resume(newTask.Thread,...)} if not rets[1] then ErrorHandler("TaskError", rets[2]) newTask.Changed:Fire("Errored",rets[2]) newTask.Remove() end return unpack(rets) end;
 				Status = function() if newTask.Timeout ~= 0 and ((os.time() - newTask.Created) > newTask.Timeout) then newTask:Stop() return "timeout" else return service.Threads.Status(newTask.Thread) end end;
-				Pause = function() newTask.R_Status = "Paused" newTask.Running = false service.Threads.Pause(newTask.Thread) newTask.Changed:fire("Paused") end;
-				Stop = function() newTask.R_Status = "Stopping" service.Threads.Stop(newTask.Thread) newTask.Changed:fire("Stopped") newTask.Remove() end;
-				Kill = function() newTask.R_Status = "Killing" service.Threads.End(newTask.Thread) newTask.Changed:fire("Killed") newTask.Remove() end;
+				Pause = function() newTask.R_Status = "Paused" newTask.Running = false service.Threads.Pause(newTask.Thread) newTask.Changed:Fire("Paused") end;
+				Stop = function() newTask.R_Status = "Stopping" service.Threads.Stop(newTask.Thread) newTask.Changed:Fire("Stopped") newTask.Remove() end;
+				Kill = function() newTask.R_Status = "Killing" service.Threads.End(newTask.Thread) newTask.Changed:Fire("Killed") newTask.Remove() end;
 			}
 
 			function newTask.Changed:Connect(func)
 				return service.Events[index.."_TASKCHANGED"]:Connect(func)
 			end;
 
-			function newTask.Changed:fire(...)
-				service.Events[index.."_TASKCHANGED"]:fire(...)
+			function newTask.Changed:Fire(...)
+				service.Events[index.."_TASKCHANGED"]:Fire(...)
 			end
 
 			function newTask.Finished:Connect(func)
@@ -420,8 +420,8 @@ return function(errorHandler, eventChecker, fenceSpecific)
 				service.Events[index.."_TASKFINISHED"]:wait(0)
 			end
 
-			function newTask.Finished:fire(...)
-				service.Events[index.."_TASKFINISHED"]:fire(...)
+			function newTask.Finished:Fire(...)
+				service.Events[index.."_TASKFINISHED"]:Fire(...)
 			end
 
 			newTask.End = newTask.Stop
@@ -470,7 +470,7 @@ return function(errorHandler, eventChecker, fenceSpecific)
 		Running = coroutine.running;
 		Create = coroutine.create;
 		Start = coroutine.resume;
-		Wrap = coroutine.wrap;
+		--Wrap = coroutine.wrap;
 		Get = coroutine.running;
 		New = function(func) local new = coroutine.create(func) table.insert(service.Threads.Threads,new) return new end;
 		End = function(thread) repeat if thread and service.Threads.Status(thread) ~= "dead" then service.Threads.Stop(thread) service.Threads.Resume(thread) else thread = false break end until not thread or service.Threads.Status(thread) == "dead" end;
@@ -481,7 +481,7 @@ return function(errorHandler, eventChecker, fenceSpecific)
 	},{
 		WrapIgnore = function(tab) return setmetatable(tab,{__metatable = "Ignore"}) end;
 		CheckWrappers = function()
-			for obj,wrap in next,Wrappers do
+			for obj,wrap in pairs(Wrappers) do
 				if service.IsDestroyed(obj) then
 					Wrappers[obj] = nil
 				end
@@ -555,10 +555,6 @@ return function(errorHandler, eventChecker, fenceSpecific)
 						Wrappers[object] = nil
 					end;
 
-					IsRobloxLocked = main and main.Anti and function()
-						return main.Anti.RLocked(object)
-					end or function() end;
-
 					GetObject = function()
 						return object
 					end;
@@ -612,19 +608,13 @@ return function(errorHandler, eventChecker, fenceSpecific)
 					object[ind] = UnWrap(val)
 				end
 
-				local ToString = custom.ToString
 				newMeta.__eq = service.RawEqual
-				newMeta.__tostring = ToString and function()
-					return ToString
-				end or function()
-					return tostring(object)
-				end
+				newMeta.__tostring = function() return custom.ToString or tostring(object) end
 				-- Roblox doesn't respect this afaik.
 				--newMeta.__gc = function(tab)
 				--	custom:RemoveFromCache()
 				--end
 				newMeta.__metatable = "Adonis_Proxy"
-
 
 				custom:AddToCache()
 				return newObj
@@ -639,13 +629,11 @@ return function(errorHandler, eventChecker, fenceSpecific)
 					return tab[ind]
 				end
 			})) or {}
-			for i,v in next,tab do
+			for i,v in pairs(tab) do
 				new[i] = v
 			end
 			return new
 		end;
-
-		IsLocked = function(obj) return not pcall(function() obj.Name = obj.Name return obj.Name end) end;
 
 		Timer = function(t,func,check)
 			local start = time()
@@ -717,7 +705,7 @@ return function(errorHandler, eventChecker, fenceSpecific)
 
 				if cmd and #service.GetPlayers(from, str, {
 					DontError = true;
-				}) > 0 then
+					}) > 0 then
 					return str
 				else
 					return service.Filter(str, from, from)
@@ -746,25 +734,29 @@ return function(errorHandler, eventChecker, fenceSpecific)
 			return new or "Filter Error"
 		end;
 
+		EscapeSpecialCharacters = function(x)
+			return string.gsub(x, "([^%w])", "%%%1")
+		end;
+
 		MetaFunc = function(func)
-	    return service.NewProxy {
-	        __call = function(tab,...)
-	            local args = {pcall(func, ...)}
-	            local success = args[1]
-	            if not success then
-	                warn(args[2])
-	            else
-	                return unpack(args, 2)
-	            end
-	        end
-	    }
+			return service.NewProxy({
+				__call = function(tab,...)
+					local args = {pcall(func, ...)}
+					local success = args[1]
+					if not success then
+						warn(args[2])
+					else
+						return unpack(args, 2)
+					end
+				end
+			})
 		end;
 
 		NewProxy = function(meta)
 			local newProxy = newproxy(true)
 			local metatable = getmetatable(newProxy)
 			metatable.__metatable = false
-			for i,v in next,meta do metatable[i] = v end
+			for i,v in pairs(meta) do metatable[i] = v end
 			return newProxy
 		end;
 
@@ -773,15 +765,13 @@ return function(errorHandler, eventChecker, fenceSpecific)
 			if ran then
 				return "Unknown"
 			else
-				return err:match("%S+$")
+				return string.match(err, "%S+$")
 			end
 		end;
 
 		CountTable = function(tab)
 			local num = 0
-			for i in next,tab do
-				num = num+1
-			end
+			for _ in pairs(tab) do num += 1 end
 			return num
 		end;
 
@@ -901,7 +891,7 @@ return function(errorHandler, eventChecker, fenceSpecific)
 		end;
 
 		ProcessLoopQueue = function()
-			for ind,data in next,LoopQueue do
+			for ind,data in pairs(LoopQueue) do
 				if not data.LastRun or (data.LastRun and time()-data.LastRun>data.Delay) then
 					if data.MaxRuns and data.NumRuns and data.MaxRuns<=data.NumRuns then
 						LoopQueue[ind] = nil
@@ -928,8 +918,8 @@ return function(errorHandler, eventChecker, fenceSpecific)
 			LoopQueue[name] = nil
 		end;
 
-		New = function(class,data)
-			local new = Instance.new(class)
+		New = function(class, data, noWrap, noAdd)
+			local new = noWrap and oldInstNew(class) or Instance.new(class)
 			if data then
 				if type(data) == "table" then
 					local parent = data.Parent
@@ -952,7 +942,7 @@ return function(errorHandler, eventChecker, fenceSpecific)
 				end
 			end
 
-			if new then
+			if new and not noAdd then
 				table.insert(CreatedItems, new)
 			end
 
@@ -961,14 +951,14 @@ return function(errorHandler, eventChecker, fenceSpecific)
 
 		Iterate = function(tab,func)
 			if tab and type(tab) == "table" then
-				for ind,val in next,tab do
+				for ind,val in pairs(tab) do
 					local ret = func(ind,val)
 					if ret ~= nil then
 						return ret
 					end
 				end
 			elseif tab and type(tab) == "userdata" then
-				for ind,val in next,tab:GetChildren() do
+				for ind,val in ipairs(tab:GetChildren()) do
 					local ret = func(val,ind)
 					if ret ~= nil then
 						return ret
@@ -983,20 +973,55 @@ return function(errorHandler, eventChecker, fenceSpecific)
 			return os.time();
 		end;
 
-		FormatTime = function(optTime, withDate)
-			local formatString = withDate and "L LT" or "LT"
+		FormatTime = function(optTime, options)
+			if options == true then options = {WithDate = true} end
+			if not options then options = {} end
+			
+			local formatString = options.FormatString 
+			if not formatString then 
+				formatString = options.WithWrittenDate and "LL HH:mm" or (options.WithDate and "L HH:mm" or "HH:mm") 
+			end
+			
 			local tim = DateTime.fromUnixTimestamp(optTime or service.GetTime())
+					
 			if service.RunService:IsServer() then
-				return tim:FormatUniversalTime(formatString, "en-gb") -- Always show UTC in 24 hour format
+				return tim:FormatUniversalTime(formatString, "en-us")
 			else
 				local locale = service.Players.LocalPlayer.LocaleId
-				local succes,err = pcall(function()
+				local success, str = pcall(function()
 					return tim:FormatLocalTime(formatString, locale) -- Show in player's local timezone and format
 				end)
-				if err then
-					return tim:FormatLocalTime(formatString, "en-gb") -- show UTC in 24 hour format because player's local timezone is not available in DateTimeLocaleConfigs
-				end
+				return success and str or tim:FormatLocalTime(formatString, "en-us") -- Fallback if locale is not supported by DateTime
 			end
+		end;
+
+		FormatPlayer = function(plr, withUserId)
+			local str = if plr.DisplayName == plr.Name then "@"..plr.Name else string.format("%s (@%s)", plr.DisplayName, plr.Name)
+			if withUserId then str ..= string.format(" [%d]", plr.UserId) end
+			return str
+		end;
+
+		FormatNumber = function(num, separator)
+			num = tonumber(num)
+			if not num then return "NaN" end
+			if num >= 1e150 then return "Inf" end
+
+			local int, dec = unpack(tostring(num):split("."))
+
+			int = int:reverse()
+			local new = ""
+			local counter = 1
+			separator = separator or ","
+			for i = 1, #int do
+				if counter > 3 then
+					new ..= separator
+					counter = 1
+				end
+				new ..= int:sub(i, i)
+				counter += 1
+			end
+
+			return new:reverse() .. if dec then "."..dec else ""
 		end;
 
 		OwnsAsset = function(p,id)
@@ -1101,7 +1126,7 @@ return function(errorHandler, eventChecker, fenceSpecific)
 			end
 		end;
 		FindClass = function(parent, class)
-			for ind, child in next,parent:GetChildren() do
+			for ind, child in pairs(parent:GetChildren()) do
 				if child:IsA(class) then
 					return child
 				end
@@ -1126,6 +1151,8 @@ return function(errorHandler, eventChecker, fenceSpecific)
 				elysianexecute = true;
 				decompile = true;
 				make_writable = true;
+				hookmetamethod = true;
+				hookfunction = true;
 			}
 
 			return service.NewProxy {
@@ -1173,9 +1200,8 @@ return function(errorHandler, eventChecker, fenceSpecific)
 				wait(tonumber(mode))
 			end
 		end;
-		ForEach = function(tab, func) for i,v in next,tab do func(tab,i,v) end return tab end;
 		OrigRawEqual = rawequal;
-		ForEach = function(tab, func) for i,v in next,tab do func(tab,i,v) end return tab end;
+		ForEach = function(tab, func) for i,v in pairs(tab) do func(tab,i,v) end return tab end;
 		HasItem = function(obj, prop) return pcall(function() return obj[prop] end) end;
 		IsDestroyed = function(object)
 			if type(object) == "userdata" and service.HasItem(object, "Parent") then
@@ -1203,7 +1229,7 @@ return function(errorHandler, eventChecker, fenceSpecific)
 			return model
 		end;
 		GetPlayers = function() return service.Players:GetPlayers() end;
-		IsAdonisObject = function(obj) for i,v in next,CreatedItems do if v == obj then return true end end end;
+		IsAdonisObject = function(obj) for i,v in pairs(CreatedItems) do if v == obj then return true end end end;
 		GetAdonisObjects = function() return CreatedItems end;
 	}
 
@@ -1226,11 +1252,11 @@ return function(errorHandler, eventChecker, fenceSpecific)
 		Delete = function(obj,num) game:GetService("Debris"):AddItem(obj,(num or 0)) pcall(obj.Destroy, obj) end;
 		RbxEvent = function(signal, func) local event = signal:Connect(func) table.insert(RbxEvents, event) return event end;
 		SelfEvent = function(signal, func) local rbxevent = service.RbxEvent(signal, function(...) func(...) end) end;
-		DelRbxEvent = function(signal) for i,v in next,RbxEvents do if v == signal then v:Disconnect() table.remove(RbxEvents, i) end end end;
-		SanitizeString = function(str) str = service.Trim(str) local new = "" for i = 1,#str do if str:sub(i,i) ~= "\n" and str:sub(i,i) ~= "\0" then new = new..str:sub(i,i) end end return new end;
-		Trim = function(str) return str:match("^%s*(.-)%s*$") end;
+		DelRbxEvent = function(signal) for i,v in pairs(RbxEvents) do if v == signal then v:Disconnect() table.remove(RbxEvents, i) end end end;
+		SanitizeString = function(str) str = service.Trim(str) local new = "" for i = 1,#str do if string.sub(str,i,i) ~= "\n" and string.sub(str,i,i) ~= "\0" then new = new..string.sub(str,i,i) end end return new end;
+		Trim = function(str) return string.match(str,"^%s*(.-)%s*$") end;
 		Round = function(num) return math.floor(num + 0.5) end;
-		Localize = function(obj, readOnly) if type(obj) == "table" then local newTab = {} for i in next,obj do newTab[i] = service.Localize(obj[i], readOnly) end return (readOnly and service.ReadOnly(newTab)) or newTab else return obj end end;
+		Localize = function(obj, readOnly) local Localize = service.Localize local ReadOnly = service.ReadOnly if type(obj) == "table" then local newTab = {} for i in pairs(obj) do newTab[i] = Localize(obj[i], readOnly) end return (readOnly and ReadOnly(newTab)) or newTab else return obj end end;
 		RawEqual = function(obj1, obj2) return service.UnWrap(obj1) == service.UnWrap(obj2) end;
 		CheckProperty = function(obj,prop) return pcall(function() return obj[prop] end) end;
 		NewWaiter = function() local event = service.New("BindableEvent") return {Wait = event.wait; Finish = event.Fire} end;
@@ -1267,14 +1293,14 @@ return function(errorHandler, eventChecker, fenceSpecific)
 	service.EventService = EventService
 
 	if client ~= nil then
-		for i,val in next,service do
+		for i,val in pairs(service) do
 			if type(val) == "userdata" then
 				service[i] = service.Wrap(val, true)
 			end
 		end
 	end
 
-	for i,v in next,Wrapper do
+	for i,v in pairs(Wrapper) do
 		if type(v) == "function" then
 			WrapService:SetSpecial(i, function(ignore, ...) return v(...) end)
 		else
@@ -1282,7 +1308,7 @@ return function(errorHandler, eventChecker, fenceSpecific)
 		end
 	end
 
-	for i,v in next,Helpers do
+	for i,v in pairs(Helpers) do
 		if type(v) == "function" then
 			HelperService:SetSpecial(i, function(ignore, ...) return v(...) end)
 		else
@@ -1290,7 +1316,7 @@ return function(errorHandler, eventChecker, fenceSpecific)
 		end
 	end
 
-	for i,v in next,Threads do
+	for i,v in pairs(Threads) do
 		if type(v) == "function" then
 			ThreadService:SetSpecial(i, function(ignore, ...) return v(...) end)
 		else
@@ -1298,7 +1324,7 @@ return function(errorHandler, eventChecker, fenceSpecific)
 		end
 	end
 
-	for i,v in next,Events do
+	for i,v in pairs(Events) do
 		if type(v) == "function" then
 			EventService:SetSpecial(i, function(ignore, ...) return v(...) end)
 		else
@@ -1306,7 +1332,7 @@ return function(errorHandler, eventChecker, fenceSpecific)
 		end
 	end
 
-	for name, service in next,{WrapService = WrapService, EventService = EventService, ThreadService = ThreadService, HelperService = HelperService} do
+	for name, service in pairs({WrapService = WrapService, EventService = EventService, ThreadService = ThreadService, HelperService = HelperService}) do
 		service:SetSpecial("ClassName", name)
 		service:SetSpecial("ToString", name)
 		service:SetSpecial("IsA", function(i, check) return check == name end)
