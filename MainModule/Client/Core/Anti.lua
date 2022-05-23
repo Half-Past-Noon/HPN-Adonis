@@ -709,7 +709,7 @@ return function(Vargs, GetEnv)
 					service.UnWrap(service.ContentProvider):PreloadAsync({tempDecal, tempDecal, service.UnWrap(service.CoreGui), tempDecal}, function(url, status)
 						if not hasDetected and (string.match(url, "^rbxassetid://") or string.match(url, "^http://www%.roblox%.com/asset/%?id=")) then
 							hasDetected = true
-							Detected("Kick", "Disallowed content URL detected in CoreGui")
+							Detected("Log", "Disallowed content URL detected in CoreGui") -- HPN -> Changed Kick to Log due to many false positives; if this gets fixed upstream then drop this change
 						end
 					end)
 
